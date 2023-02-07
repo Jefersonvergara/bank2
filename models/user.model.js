@@ -1,9 +1,8 @@
 const { DataTypes } = require("sequelize");
 const { db } = require("../database/config");
 
-
 const User = db.define("usuario", {
-   id: {
+  id: {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
@@ -16,7 +15,6 @@ const User = db.define("usuario", {
   accountNumber: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    
   },
   password: {
     type: DataTypes.STRING,
@@ -25,14 +23,12 @@ const User = db.define("usuario", {
   amount: {
     type: DataTypes.FLOAT,
     allowNull: false,
-    
   },
 
   status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
-    
   },
 });
 

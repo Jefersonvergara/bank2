@@ -3,7 +3,7 @@ const { makeTransfer } = require("../controllers/transfer.controller");
 
 const router = Router();
 
-router.post("/",makeTransfer);// Ruta de transferencia de usuario
-module.exports ={
-    routerTransfer: router,
+router.post("/", makeTransfer); // Ruta de transferencia de usuario
+module.exports = {
+  routerTransfer: router,
 };

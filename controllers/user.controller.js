@@ -25,66 +25,65 @@ exports.createUser = async (req, res) => {
 
 //********** Login de usuario **********//
 
-
 exports.loginUser = async (req, res) => {
-    const { accountNumber, password } = req.body;
-  
-    const userFinder = await User.findOne({
-      where: {
-        accountNumber,
-        password,
-        status: true,
-      },
-    });
+  const { accountNumber, password } = req.body;
+
+  const userFinder = await User.findOne({
+    where: {
+      accountNumber,
+      password,
+      status: true,
+    },
+  });
   //********** validamos el usuario **********
-    if (userFinder === null) {
-      return res.status(404).json({
-        status: "error",
-        message: "User no Found",
-        userFinder,
-      });
-    }
-  // ********** usuario logueado con exito **********
-    res.status(200).json({
-      status: "success",
-      message: "User successfully logged in",
+  if (userFinder === null) {
+    return res.status(404).json({
+      status: "error",
+      message: "User no Found",
       userFinder,
     });
-  };
+  }
+  // ********** usuario logueado con exito **********
+  res.status(200).json({
+    status: "success",
+    message: "User successfully logged in",
+    userFinder,
+  });
+};
 // ********** Obtine todas las trasnferencias echas por id de usuario **********
-  exports.allTranfer = async (req, res) => {
-    const { id } = req.params;
-  
-    const history = await Transfer.findAll({
+exports.allTranfer = async (req, res) => {
+  const { id } = req.params;
+
+  const history = await Transfer.findAll({
+    where: {
+      senderUserId: id,
+    },
+  });
+
+  if (
+    (await Transfer.findOne({
       where: {
         senderUserId: id,
       },
+    })) === null
+  ) {
+    return res.status(404).json({
+      status: "error",
+      message: "History not found",
     });
-  
-    if (
-      (await Transfer.findOne({
-        where: {
-          senderUserId: id,
-        },
-      })) === null
-    ) {
-      return res.status(404).json({
-        status: "error",
-        message: "History not found",
-      });
-    }
-  
-    const userFinder = await User.findOne({
-      where: {
-        id,
-      },
-    });
-  
-    const nameUser = userFinder.name;
-  
-    res.status(200).json({
-      status: "success",
-      message: "Transfer history made by " + nameUser,
-      history,
-    });
-  };
+  }
+
+  const userFinder = await User.findOne({
+    where: {
+      id,
+    },
+  });
+
+  const nameUser = userFinder.name;
+
+  res.status(200).json({
+    status: "success",
+    message: "Transfer history made by " + nameUser,
+    history,
+  });
+};
